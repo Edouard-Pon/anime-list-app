@@ -33,7 +33,11 @@ export const animeSlice = createSlice({
     uploadStatus: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetUploadStatus: (state) => {
+      state.uploadStatus = 'idle'
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAnime.pending, (state) => {
       state.status = 'loading'
@@ -60,4 +64,5 @@ export const animeSlice = createSlice({
   }
 })
 
+export const { resetUploadStatus } = animeSlice.actions
 export default animeSlice.reducer

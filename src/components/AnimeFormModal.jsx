@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAnime } from '../store/anime'
+import { addAnime, resetUploadStatus } from '../store/anime'
 import PropTypes from 'prop-types'
 
 const AnimeFormModal = ({ isOpen, onClose }) => {
@@ -46,8 +46,9 @@ const AnimeFormModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (animeUploadStatus === 'succeeded') {
       onClose()
+      dispatch(resetUploadStatus())
     }
-  }, [animeUploadStatus, onClose])
+  }, [animeUploadStatus, onClose, dispatch])
 
   if (!isOpen) return null
 

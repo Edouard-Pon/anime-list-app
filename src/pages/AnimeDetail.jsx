@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAnimeById, resetSelectedStatus } from '../store/anime'
 import Loading from '../components/Loading'
 import ButtonDeleteAnime from '../components/ButtonDelete'
+import ButtonEditAnime from '../components/ButtonEdit'
 import { formatDate } from '../utils/utils'
 import {
   getAnimeCoverImage,
   getAnimeDescription,
   getAnimeDuration,
   getAnimeEpisodes,
-  getAnimeExternalLink,
+  getAnimeExternalLink, getAnimeId,
   // getAnimeGenres,
   getAnimeRating,
   getAnimeReleaseDate,
@@ -113,7 +114,10 @@ const AnimeDetail = () => {
       <div className="bg-gray-200 flex-grow rounded-lg p-4">
         <div className="mb-4 flex justify-between">
           <h1 className="text-3xl">{getAnimeTitle(anime)}</h1>
-          <ButtonDeleteAnime id={id} />
+          <div className="flex flex-row gap-3">
+            {anime && getAnimeId(anime) && <ButtonEditAnime anime={anime} />}
+            <ButtonDeleteAnime id={id} />
+          </div>
         </div>
         {getAnimeDescription(anime) && (
           <div className="rounded-lg bg-gray-300 p-4">

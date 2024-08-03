@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchAnime } from '../store/anime'
 import { getAnimeId } from '../utils/animeUtils.js'
 import AnimeCard from '../components/AnimeCard'
+import Loading from '../components/Loading.jsx'
 
 const Home = () => {
   const animeList = useSelector((state) => state.anime.anime)
@@ -13,7 +14,7 @@ const Home = () => {
     dispatch(fetchAnime())
   }, [dispatch])
 
-  if (status === 'loading') return <div>Loading...</div>
+  if (status === 'loading') return <Loading />
   if (status === 'failed') return <div>Error fetching anime</div>
 
   return (

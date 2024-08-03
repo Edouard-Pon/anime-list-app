@@ -1,9 +1,10 @@
 import { useParams } from 'react-router-dom'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAnimeById, resetSelectedStatus } from '../store/anime.js';
-import Loading from '../components/Loading.jsx';
-import { formatDate } from '../utils/utils.js';
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAnimeById, resetSelectedStatus } from '../store/anime'
+import Loading from '../components/Loading'
+import ButtonDeleteAnime from '../components/ButtonDelete'
+import { formatDate } from '../utils/utils'
 import {
   getAnimeCoverImage,
   getAnimeDescription,
@@ -110,8 +111,9 @@ const AnimeDetail = () => {
         </div>
       </div>
       <div className="bg-gray-200 flex-grow rounded-lg p-4">
-        <div className="mb-4">
+        <div className="mb-4 flex justify-between">
           <h1 className="text-3xl">{getAnimeTitle(anime)}</h1>
+          <ButtonDeleteAnime id={id} />
         </div>
         {getAnimeDescription(anime) && (
           <div className="rounded-lg bg-gray-300 p-4">

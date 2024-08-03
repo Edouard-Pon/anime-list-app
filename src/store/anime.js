@@ -30,6 +30,20 @@ export const addAnime = createAsyncThunk('anime/addAnime', async (anime = {}, { 
   return response.data.anime
 })
 
+export const deleteAnime = createAsyncThunk('anime/deleteAnime', async (id = '', { getState }) => {
+  const token = getState().auth.token
+
+  const response = await api({
+    method: 'delete',
+    url: `/anime/${id}`,
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+
+  return response.data
+})
+
 export const animeSlice = createSlice({
   name: 'anime',
   initialState: {
@@ -38,6 +52,7 @@ export const animeSlice = createSlice({
     status: 'idle',
     selectedStatus: 'idle',
     uploadStatus: 'idle',
+    deleteStatus: 'idle',
     error: null,
   },
   reducers: {
@@ -47,6 +62,9 @@ export const animeSlice = createSlice({
     resetSelectedStatus: (state) => {
       state.selectedStatus = 'idle'
     },
+    resetDeleteStatus: (state) => {
+      state.deleteStatus = 'idle'
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAnime.pending, (state) => {
@@ -82,8 +100,19 @@ export const animeSlice = createSlice({
       state.uploadStatus = 'failed'
       state.error = action.error.message
     })
+    builder.addCase(deleteAnime.pending, (state) => {
+      state.deleteStatus = 'loading'
+    })
+    builder.addCase(deleteAnime.fulfilled, (state, action) => {
+      state.deleteStatus = 'succeeded'
+      state.anime = state.anime.filter(anime => anime._id !== action.payload.id)
+    })
+    builder.addCase(deleteAnime.rejected, (state, action) => {
+      state.deleteStatus = 'failed'
+      state.error = action.error.message
+    })
   }
 })
 
-export const { resetUploadStatus, resetSelectedStatus } = animeSlice.actions
+export const { resetUploadStatus, resetSelectedStatus, resetDeleteStatus } = animeSlice.actions
 export default animeSlice.reducer

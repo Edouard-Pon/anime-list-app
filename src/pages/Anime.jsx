@@ -5,6 +5,7 @@ import AnimeCard from '../components/AnimeCard'
 import { getAnimeId } from '../utils/animeUtils.js'
 import { isAdmin } from '../utils/authUtils.js'
 import AnimeFormModal from '../components/AnimeFormModal'
+import Loading from '../components/Loading'
 
 const Anime = () => {
   const user = useSelector((state) => state.auth.user)
@@ -17,7 +18,7 @@ const Anime = () => {
     dispatch(fetchAnime())
   }, [dispatch])
 
-  if (status === 'loading') return <div>Loading...</div>
+  if (status === 'loading') return <Loading />
   if (status === 'failed') return <div>Error fetching anime</div>
 
   return (

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import api from '../services/api'
-import { buildAnimeFormData } from '../utils/animeUtils.js';
+import { buildAnimeFormData } from '../utils/animeUtils'
 
 export const fetchAnime = createAsyncThunk('anime/fetchAnime', async () => {
   const response = await api.get('/anime')
@@ -20,6 +20,24 @@ export const addAnime = createAsyncThunk('anime/addAnime', async (anime = {}, { 
   const response = await api({
     method: 'post',
     url: '/anime/create',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+
+  return response.data.anime
+})
+
+export const updateAnime = createAsyncThunk('anime/updateAnime', async (anime = {}, { getState }) => {
+  const token = getState().auth.token
+
+  const formData = buildAnimeFormData(anime)
+
+  const response = await api({
+    method: 'put',
+    url: `/anime/${anime.id}`,
     data: formData,
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -52,6 +70,7 @@ export const animeSlice = createSlice({
     status: 'idle',
     selectedStatus: 'idle',
     uploadStatus: 'idle',
+    updateStatus: 'idle',
     deleteStatus: 'idle',
     error: null,
   },
@@ -64,6 +83,12 @@ export const animeSlice = createSlice({
     },
     resetDeleteStatus: (state) => {
       state.deleteStatus = 'idle'
+    },
+    resetUpdateStatus: (state) => {
+      state.updateStatus = 'idle'
+    },
+    resetError: (state) => {
+      state.error = null
     }
   },
   extraReducers: (builder) => {
@@ -111,8 +136,26 @@ export const animeSlice = createSlice({
       state.deleteStatus = 'failed'
       state.error = action.error.message
     })
+    builder.addCase(updateAnime.pending, (state) => {
+      state.updateStatus = 'loading'
+    })
+    builder.addCase(updateAnime.fulfilled, (state, action) => {
+      state.updateStatus = 'succeeded'
+      console.log(action.payload)
+      state.selectedAnime = action.payload
+    })
+    builder.addCase(updateAnime.rejected, (state, action) => {
+      state.updateStatus = 'failed'
+      state.error = action.error.message
+    })
   }
 })
 
-export const { resetUploadStatus, resetSelectedStatus, resetDeleteStatus } = animeSlice.actions
+export const {
+  resetUploadStatus,
+  resetSelectedStatus,
+  resetDeleteStatus,
+  resetUpdateStatus,
+  resetError
+} = animeSlice.actions
 export default animeSlice.reducer

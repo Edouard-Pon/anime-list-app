@@ -1,66 +1,86 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAnime, resetUploadStatus } from '../store/anime'
+import { addAnime, updateAnime, resetUploadStatus, resetUpdateStatus } from '../store/anime'
 import PropTypes from 'prop-types'
+import { animePropTypes } from '../props/animePropTypes'
+import { getAnimeId } from '../utils/animeUtils'
 
-const AnimeFormModal = ({ isOpen, onClose }) => {
+const AnimeFormModal = ({ isOpen, onClose, anime }) => {
   const dispatch = useDispatch()
   const animeStatus = useSelector((state) => state.anime.status)
   const animeUploadStatus = useSelector((state) => state.anime.uploadStatus)
+  const animeUpdateStatus = useSelector((state) => state.anime.updateStatus)
   const animeError = useSelector((state) => state.anime.error)
 
-  const [title, setTitle] = useState('')
-  const [type, setType] = useState('')
-  const [episodes, setEpisodes] = useState('')
-  const [status, setStatus] = useState('Ongoing')
-  const [description, setDescription] = useState('')
-  const [releaseDate, setReleaseDate] = useState('')
-  const [source, setSource] = useState('')
-  const [externalLink, setExternalLink] = useState('')
-  const [cover, setCover] = useState(null)
-  const [genres, setGenres] = useState([])
+  const [title, setTitle] = useState(anime ? anime.title : '')
+  const [type, setType] = useState(anime ? anime.type : '')
+  const [episodes, setEpisodes] = useState(anime ? anime.episodes : '')
+  const [status, setStatus] = useState(anime ? anime.status : '')
+  const [description, setDescription] = useState(anime ? anime.description : '')
+  const [releaseDate, setReleaseDate] = useState(anime ? anime.releaseDate : '')
+  const [source, setSource] = useState(anime ? anime.source : '')
+  const [externalLink, setExternalLink] = useState(anime ? anime.externalLink : '')
+  const [cover, setCover] = useState(anime ? anime.cover : null)
+  const [genres, setGenres] = useState(anime ? anime.genres : [])
+  const [duration, setDuration] = useState(anime ? anime.duration : '')
+  const [rating, setRating] = useState(anime ? anime.rating : '')
   // const [themes, setThemes] = useState([]) // TODO - WIP
-  const [duration, setDuration] = useState('')
-  const [rating, setRating] = useState('')
   // const [character, setCharacter] = useState([]) // TODO - WIP - character - add input with search character method
 
-  const handleAddAnime = () => {
-    dispatch(addAnime({
-      title,
-      type,
-      episodes,
-      status,
-      description,
-      releaseDate,
-      source,
-      externalLink,
-      cover,
-      genres,
-      // themes,
-      duration,
-      rating,
-      // character
-    }))
-  };
+  const handleSaveAnime = () => {
+    if (anime) {
+      dispatch(updateAnime({
+        id: getAnimeId(anime),
+        title,
+        type,
+        episodes,
+        status,
+        description,
+        releaseDate,
+        source,
+        externalLink,
+        cover,
+        genres,
+        duration,
+        rating
+      }))
+    } else {
+      dispatch(addAnime({
+        title,
+        type,
+        episodes,
+        status,
+        description,
+        releaseDate,
+        source,
+        externalLink,
+        cover,
+        genres,
+        duration,
+        rating
+      }))
+    }
+  }
 
   useEffect(() => {
-    if (animeUploadStatus === 'succeeded') {
+    if (animeUploadStatus === 'succeeded' || animeUpdateStatus === 'succeeded') {
       onClose()
       dispatch(resetUploadStatus())
+      dispatch(resetUpdateStatus())
     }
-  }, [animeUploadStatus, onClose, dispatch])
+  }, [animeUploadStatus, animeUpdateStatus, onClose, dispatch])
 
   if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
       <div className="bg-white p-8 w-96" onClick={(e) => e.stopPropagation()}>
-        <h2 className="text-2xl font-bold mb-4">Add Anime</h2>
+        <h2 className="text-2xl font-bold mb-4">{anime ? 'Edit Anime' : 'Add Anime'}</h2>
         <input
           type="file"
           onChange={(e) => setCover(e.target.files[0])}
           className="border border-gray-300 rounded p-2 w-full mb-4"
-          required={true}
+          required={!anime}
         />
         <input
           type="text"
@@ -155,11 +175,11 @@ const AnimeFormModal = ({ isOpen, onClose }) => {
           required={false}
         />
         <button
-          onClick={handleAddAnime}
+          onClick={handleSaveAnime}
           disabled={animeStatus === 'loading'}
           className="bg-blue-500 text-white rounded p-2 w-full"
         >
-          {animeStatus === 'loading' ? 'Loading...' : 'Add Anime'}
+          {animeStatus === 'loading' ? 'Loading...' : anime ? 'Save Changes' : 'Add Anime'}
         </button>
         {animeError && <p className="text-red-500 mt-4">{animeError}</p>}
         <button onClick={onClose} className="text-blue-500 mt-4">Close</button>
@@ -171,6 +191,7 @@ const AnimeFormModal = ({ isOpen, onClose }) => {
 AnimeFormModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
+  anime: animePropTypes,
 }
 
 export default AnimeFormModal

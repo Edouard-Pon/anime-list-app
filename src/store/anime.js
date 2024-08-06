@@ -12,6 +12,18 @@ export const fetchAnimeById = createAsyncThunk('anime/fetchAnimeById', async (id
   return response.data
 })
 
+export const searchAnime = createAsyncThunk('anime/searchAnime', async (query = {}) => {
+  const response = await api({
+    method: 'post',
+    url: '/anime/search',
+    data: {
+      title: query.title,
+    }
+  })
+
+  return response.data.anime
+})
+
 export const addAnime = createAsyncThunk('anime/addAnime', async (anime = {}, { getState }) => {
   const token = getState().auth.token
 
@@ -72,6 +84,7 @@ export const animeSlice = createSlice({
     uploadStatus: 'idle',
     updateStatus: 'idle',
     deleteStatus: 'idle',
+    searchStatus: 'idle',
     error: null,
   },
   reducers: {
@@ -86,6 +99,9 @@ export const animeSlice = createSlice({
     },
     resetUpdateStatus: (state) => {
       state.updateStatus = 'idle'
+    },
+    resetSearchStatus: (state) => {
+      state.searchStatus = 'idle'
     },
     resetError: (state) => {
       state.error = null
@@ -148,6 +164,17 @@ export const animeSlice = createSlice({
       state.updateStatus = 'failed'
       state.error = action.error.message
     })
+    builder.addCase(searchAnime.pending, (state) => {
+      state.searchStatus = 'loading'
+    })
+    builder.addCase(searchAnime.fulfilled, (state, action) => {
+      state.searchStatus = 'succeeded'
+      state.anime = action.payload
+    })
+    builder.addCase(searchAnime.rejected, (state, action) => {
+      state.searchStatus = 'failed'
+      state.error = action.error.message
+    })
   }
 })
 
@@ -156,6 +183,7 @@ export const {
   resetSelectedStatus,
   resetDeleteStatus,
   resetUpdateStatus,
+  resetSearchStatus,
   resetError
 } = animeSlice.actions
 export default animeSlice.reducer

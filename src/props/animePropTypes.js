@@ -17,4 +17,4 @@ export const animePropTypes = PropTypes.shape({
   themes: PropTypes.array,
   character: PropTypes.array,
   coverImagePath: PropTypes.string.isRequired,
-}).isRequired
+})

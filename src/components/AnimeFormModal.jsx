@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { animePropTypes } from '../props/animePropTypes'
 import { getAnimeId } from '../utils/animeUtils'
 
-const AnimeFormModal = ({ isOpen, onClose, anime }) => {
+const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
   const dispatch = useDispatch()
   const animeStatus = useSelector((state) => state.anime.status)
   const animeUploadStatus = useSelector((state) => state.anime.uploadStatus)

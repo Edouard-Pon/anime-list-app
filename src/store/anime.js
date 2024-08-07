@@ -157,7 +157,6 @@ export const animeSlice = createSlice({
     })
     builder.addCase(updateAnime.fulfilled, (state, action) => {
       state.updateStatus = 'succeeded'
-      console.log(action.payload)
       state.selectedAnime = action.payload
     })
     builder.addCase(updateAnime.rejected, (state, action) => {

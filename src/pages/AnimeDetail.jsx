@@ -11,8 +11,9 @@ import {
   getAnimeDescription,
   getAnimeDuration,
   getAnimeEpisodes,
-  getAnimeExternalLink, getAnimeId,
-  // getAnimeGenres,
+  getAnimeExternalLink,
+  getAnimeId,
+  getAnimeGenres,
   getAnimeRating,
   getAnimeReleaseDate,
   getAnimeSource,
@@ -89,10 +90,10 @@ const AnimeDetail = () => {
               <p>{getAnimeDuration(anime)}</p>
             </div>
           )}
-          {/*<div>*/}
-          {/*  <p>Genres</p>*/}
-          {/*  <p>{getAnimeGenres(anime).join(', ')}</p>*/}
-          {/*</div>*/}
+          <div>
+            <p>Genres</p>
+            <p>{getAnimeGenres(anime).join(', ')}</p>
+          </div>
           {getAnimeThemes(anime).length > 0 && (
             <div>
               <p>Themes</p>

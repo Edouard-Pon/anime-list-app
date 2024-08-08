@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../store/auth'
 import { useState } from 'react'
-import LoginModal from './auth/LoginModal.jsx'
+import LoginModal from './auth/LoginModal'
+import RegisterModal from './auth/RegisterModal'
 
 function Navigation() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const dispatch = useDispatch()
-  const [isModalOpen, setModalOpen] = useState(false)
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false)
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false)
 
   const handleLogout = () => {
     dispatch(logout())
@@ -30,12 +32,18 @@ function Navigation() {
             <button onClick={handleLogout} className="text-white">Logout</button>
           </li>
         ) : (
-          <li>
-            <button onClick={() => setModalOpen(true)} className="text-white">Login</button>
-          </li>
+          <>
+            <li>
+              <button onClick={() => setLoginModalOpen(true)} className="text-white">Login</button>
+            </li>
+            <li>
+              <button onClick={() => setRegisterModalOpen(true)} className="text-white">Register</button>
+            </li>
+          </>
         )}
       </ul>
-      <LoginModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)}/>
+      <RegisterModal isOpen={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)}/>
     </nav>
   )
 }

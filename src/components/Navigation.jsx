@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../store/auth'
 import { useState } from 'react'
-import AuthModal from './AuthModal'
+import LoginModal from './auth/LoginModal.jsx'
 
 function Navigation() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
@@ -35,7 +35,7 @@ function Navigation() {
           </li>
         )}
       </ul>
-      <AuthModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+      <LoginModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
     </nav>
   )
 }

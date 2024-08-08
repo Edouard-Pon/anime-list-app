@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { isAdmin } from '../utils/authUtils'
-import AnimeFormModal from './AnimeFormModal'
-import { animePropTypes } from '../props/animePropTypes'
+import { isAdmin } from '../../utils/authUtils.js'
+import AnimeFormModal from '../anime/AnimeFormModal.jsx'
+import { animePropTypes } from '../../props/animePropTypes.js'
 
 const ButtonEditAnime = ({ anime }) => {
   const user = useSelector((state) => state.auth.user)

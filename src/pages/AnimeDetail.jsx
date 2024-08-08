@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAnimeById, resetSelectedStatus } from '../store/anime'
 import Loading from '../components/Loading'
-import ButtonDeleteAnime from '../components/ButtonDelete'
-import ButtonEditAnime from '../components/ButtonEdit'
+import ButtonDeleteAnime from '../components/button/ButtonDelete.jsx'
+import ButtonEditAnime from '../components/button/ButtonEdit.jsx'
 import { formatDate } from '../utils/utils'
 import {
   getAnimeCoverImage,

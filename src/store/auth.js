@@ -6,6 +6,15 @@ export const login = createAsyncThunk('auth/login', async (credentials = {}) => 
   return response.data
 })
 
+export const register = createAsyncThunk('auth/register', async (credentials = {}, { rejectWithValue }) => {
+  try {
+    const response = await api.post('/user/register', credentials)
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
 export const logout = createAsyncThunk('auth/logout', async () => {
   return null
 })
@@ -46,6 +55,23 @@ export const authSlice = createSlice({
       localStorage.removeItem('user')
       localStorage.removeItem('token')
       localStorage.removeItem('isAuthenticated')
+    })
+    builder.addCase(register.pending, (state) => {
+      state.status = 'loading'
+    })
+    builder.addCase(register.fulfilled, (state, action) => {
+      state.status = 'succeeded'
+      state.user = action.payload.user
+      state.token = action.payload.token
+      state.isAuthenticated = true
+      state.error = null
+      localStorage.setItem('user', JSON.stringify(action.payload.user))
+      localStorage.setItem('token', action.payload.token)
+      localStorage.setItem('isAuthenticated', true)
+    })
+    builder.addCase(register.rejected, (state, action) => {
+      state.status = 'failed'
+      state.error = action.payload?.message || action.error.message
     })
   }
 })

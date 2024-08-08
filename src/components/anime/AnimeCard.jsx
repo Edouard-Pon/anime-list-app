@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { getAnimeTitle, getAnimeCoverImage, getAnimeId } from '../utils/animeUtils.js'
-import { animePropTypes } from '../props/animePropTypes.js';
+import { getAnimeTitle, getAnimeCoverImage, getAnimeId } from '../../utils/animeUtils.js'
+import { animePropTypes } from '../../props/animePropTypes.js';
 
 const AnimeCard = ({ anime }) => {
   return (

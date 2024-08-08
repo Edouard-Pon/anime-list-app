@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchAnime } from '../store/anime'
-import AnimeCard from '../components/AnimeCard'
+import AnimeCard from '../components/anime/AnimeCard.jsx'
 import { getAnimeId } from '../utils/animeUtils.js'
 import { isAdmin } from '../utils/authUtils.js'
-import AnimeFormModal from '../components/AnimeFormModal'
+import AnimeFormModal from '../components/anime/AnimeFormModal.jsx'
 import Loading from '../components/Loading'
 import SearchBar from '../components/SearchBar'
 

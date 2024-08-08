@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchAnime } from '../store/anime'
 import { getAnimeId } from '../utils/animeUtils.js'
-import AnimeCard from '../components/AnimeCard'
+import AnimeCard from '../components/anime/AnimeCard.jsx'
 import Loading from '../components/Loading.jsx'
 
 const Home = () => {

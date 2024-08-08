@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteAnime, resetDeleteStatus } from '../store/anime'
+import { deleteAnime, resetDeleteStatus } from '../../store/anime.js'
 import PropTypes from 'prop-types'
-import { isAdmin } from '../utils/authUtils'
+import { isAdmin } from '../../utils/authUtils.js'
 import { useNavigate } from 'react-router-dom'
 
 const ButtonDeleteAnime = ({ id }) => {

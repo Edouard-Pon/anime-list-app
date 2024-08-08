@@ -1,9 +1,9 @@
 import {PlusIcon, XMarkIcon} from '@heroicons/react/24/solid'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAnime, updateAnime, resetUploadStatus, resetUpdateStatus } from '../store/anime'
+import { addAnime, updateAnime, resetUploadStatus, resetUpdateStatus } from '../../store/anime.js'
 import PropTypes from 'prop-types'
-import { animePropTypes } from '../props/animePropTypes'
+import { animePropTypes } from '../../props/animePropTypes.js'
 import { format } from 'date-fns'
 import {
   getAnimeCoverImage,
@@ -13,7 +13,7 @@ import {
   getAnimeStatus,
   getAnimeTitle,
   getAnimeType
-} from '../utils/animeUtils'
+} from '../../utils/animeUtils.js'
 
 const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
   const dispatch = useDispatch()

@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../store/auth.js'
+import { login } from '../../store/auth.js'
 import PropTypes from 'prop-types';
 
-const AuthModal = ({ isOpen, onClose }) => {
+const LoginModal = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
@@ -54,9 +54,9 @@ const AuthModal = ({ isOpen, onClose }) => {
   )
 }
 
-AuthModal.propTypes = {
+LoginModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
 }
 
-export default AuthModal
+export default LoginModal

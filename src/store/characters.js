@@ -19,6 +19,22 @@ export const fetchCharacterById = createAsyncThunk('characters/fetchCharacterByI
   }
 })
 
+export const searchCharacters = createAsyncThunk('characters/searchCharacters', async (query = {}, { rejectWithValue }) => {
+  try {
+    const response = await api({
+      method: 'post',
+      url: '/character/search',
+      data: {
+        name: query.name
+      }
+    })
+
+    return response.data.character
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
 export const deleteCharacter = createAsyncThunk('characters/deleteCharacter', async (id = '', { getState, rejectWithValue }) => {
   const token = getState().auth.token
 
@@ -46,6 +62,7 @@ export const charactersSlice = createSlice({
     status: 'idle',
     selectedStatus: 'idle',
     deleteStatus: 'idle',
+    searchStatus: 'idle',
     error: null
   },
   reducers: {
@@ -57,6 +74,9 @@ export const charactersSlice = createSlice({
     },
     resetDeleteStatus: (state) => {
       state.deleteStatus = 'idle'
+    },
+    resetSearchStatus: (state) => {
+      state.searchStatus = 'idle'
     }
   },
   extraReducers: (builder) => {
@@ -94,8 +114,19 @@ export const charactersSlice = createSlice({
         state.deleteStatus = 'failed'
         state.error = action.payload?.message || action.error.message
       })
+      .addCase(searchCharacters.pending, (state) => {
+        state.searchStatus = 'loading'
+      })
+      .addCase(searchCharacters.fulfilled, (state, action) => {
+        state.searchStatus = 'succeeded'
+        state.characters = action.payload
+      })
+      .addCase(searchCharacters.rejected, (state, action) => {
+        state.searchStatus = 'failed'
+        state.error = action.payload?.message || action.error.message
+      })
   }
 })
 
-export const { resetError, resetSelectedStatus, resetDeleteStatus } = charactersSlice.actions
+export const { resetError, resetSelectedStatus, resetDeleteStatus, resetSearchStatus } = charactersSlice.actions
 export default charactersSlice.reducer

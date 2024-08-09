@@ -26,7 +26,7 @@ const Anime = () => {
   if (status === 'failed') return <div>Error fetching anime</div>
 
   return (
-    <div className="w-9/12 bg-gray-100 m-auto">
+    <div className="container bg-gray-100 m-auto">
       <div className="p-6">
         <h1 className="text-3xl font-bold">Anime</h1>
         {user && isAdmin(user) && (
@@ -40,7 +40,7 @@ const Anime = () => {
         <SearchBar setIsSearching={setIsSearching} />
       </div>
       {((isSearching && searchStatus === 'loading') || status === 'loading') && <Loading />}
-      <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+      <div className="grid justify-items-center gap-6" style={{gridTemplateColumns: "repeat(auto-fit, minmax(208px, 1fr))"}}>
         {animeList.map(anime => (
           <AnimeCard key={getAnimeId(anime)} anime={anime}/>
         ))}

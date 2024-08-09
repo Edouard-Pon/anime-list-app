@@ -10,10 +10,11 @@ import {
   getCharacterImage,
   getCharacterUploadDate,
   getCharacterOriginalName,
-  getCharacterDescription,
+  getCharacterDescription, getCharacterId,
 } from '../utils/characterUtils';
 import AnimeCard from '../components/anime/AnimeCard.jsx';
 import {getAnimeId} from '../utils/animeUtils.js';
+import ButtonEditCharacter from '../components/character/ButtonEditCharacter.jsx';
 
 const CharacterDetail = () => {
   const { id } = useParams()
@@ -61,7 +62,10 @@ const CharacterDetail = () => {
       <div className="flex-grow bg-gray-200 rounded-lg p-4">
         <div className="mb-4 flex justify-between">
           <h1 className="text-3xl">{getCharacterName(character)}</h1>
-          <ButtonDeleteCharacter id={id} />
+          <div className="flex flex-row gap-3">
+            {character && getCharacterId(character) && <ButtonEditCharacter character={character} />}
+            <ButtonDeleteCharacter id={id} />
+          </div>
         </div>
         {getCharacterDescription(character) && (
           <div className="rounded-lg bg-gray-300 p-4">

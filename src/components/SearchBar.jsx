@@ -1,4 +1,5 @@
 import { searchAnime } from '../store/anime'
+import { searchCharacters } from '../store/characters'
 import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
@@ -18,6 +19,7 @@ const SearchBar = ({ setIsSearching }) => {
     if (debouncedQuery.length >= 2) {
       setIsSearching(true)
       if (searchType === 'anime') dispatch(searchAnime({ title: debouncedQuery }))
+      if (searchType === 'characters') dispatch(searchCharacters({ name: debouncedQuery }))
     } else {
       setIsSearching(false)
     }

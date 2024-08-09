@@ -45,8 +45,8 @@ const AnimeDetail = () => {
 
   return (
     <div className="container mx-auto p-4 bg-gray-100 flex flex-wrap gap-6">
-      <div>
-        <div className="max-w-64">
+      <div className="w-64">
+        <div className="w-64">
           <img className="rounded-lg object-cover" src={getAnimeCoverImage(anime)} alt={getAnimeTitle(anime)}/>
         </div>
         <div className="flex flex-col gap-1 p-2 mt-6 bg-gray-200 rounded-lg">
@@ -112,7 +112,7 @@ const AnimeDetail = () => {
           )}
         </div>
       </div>
-      <div className="bg-gray-200 flex-grow rounded-lg p-4">
+      <div className="flex-grow bg-gray-200 rounded-lg p-4">
         <div className="mb-4 flex justify-between">
           <h1 className="text-3xl">{getAnimeTitle(anime)}</h1>
           <div className="flex flex-row gap-3">

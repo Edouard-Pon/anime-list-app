@@ -3,10 +3,9 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCharacterById, resetSelectedStatus } from '../store/characters'
 import Loading from '../components/Loading'
+import ButtonDeleteCharacter from '../components/character/ButtonDeleteCharacter'
 import { formatDate } from '../utils/utils'
 import {
-  getCharacterId,
-  getCharacterAnime,
   getCharacterName,
   getCharacterImage,
   getCharacterUploadDate,
@@ -62,6 +61,7 @@ const CharacterDetail = () => {
       <div className="flex-grow bg-gray-200 rounded-lg p-4">
         <div className="mb-4 flex justify-between">
           <h1 className="text-3xl">{getCharacterName(character)}</h1>
+          <ButtonDeleteCharacter id={id} />
         </div>
         {getCharacterDescription(character) && (
           <div className="rounded-lg bg-gray-300 p-4">

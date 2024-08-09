@@ -209,5 +209,6 @@ export const {
   resetDeleteStatus,
   resetSearchStatus,
   resetUploadStatus,
+  resetUpdateStatus,
 } = charactersSlice.actions
 export default charactersSlice.reducer

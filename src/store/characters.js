@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import api from '../services/api'
+import { buildCharacterFormData } from '../utils/characterUtils'
 
 export const fetchCharacters = createAsyncThunk('characters/fetchCharacters', async ({ rejectWithValue }) => {
   try {
@@ -35,6 +36,50 @@ export const searchCharacters = createAsyncThunk('characters/searchCharacters', 
   }
 })
 
+export const addCharacter = createAsyncThunk('characters/addCharacter', async (character = {}, { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+
+  const formData = buildCharacterFormData(character)
+
+  try {
+    const response = await api({
+      method: 'post',
+      url: '/character/create',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    return response.data.character
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
+export const updateCharacter = createAsyncThunk('characters/updateCharacter', async (character = {}, { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+
+  const formData = buildCharacterFormData(character)
+
+  try {
+    const response = await api({
+      method: 'put',
+      url: `/character/${character.id}`,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    return response.data.character
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
 export const deleteCharacter = createAsyncThunk('characters/deleteCharacter', async (id = '', { getState, rejectWithValue }) => {
   const token = getState().auth.token
 
@@ -61,6 +106,8 @@ export const charactersSlice = createSlice({
     selectedCharacterAnime: [],
     status: 'idle',
     selectedStatus: 'idle',
+    uploadStatus: 'idle',
+    updateStatus: 'idle',
     deleteStatus: 'idle',
     searchStatus: 'idle',
     error: null
@@ -77,7 +124,13 @@ export const charactersSlice = createSlice({
     },
     resetSearchStatus: (state) => {
       state.searchStatus = 'idle'
-    }
+    },
+    resetUploadStatus: (state) => {
+      state.uploadStatus = 'idle'
+    },
+    resetUpdateStatus: (state) => {
+      state.updateStatus = 'idle'
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -125,8 +178,36 @@ export const charactersSlice = createSlice({
         state.searchStatus = 'failed'
         state.error = action.payload?.message || action.error.message
       })
+      .addCase(addCharacter.pending, (state) => {
+        state.uploadStatus = 'loading'
+      })
+      .addCase(addCharacter.fulfilled, (state, action) => {
+        state.uploadStatus = 'succeeded'
+        state.characters.push(action.payload)
+      })
+      .addCase(addCharacter.rejected, (state, action) => {
+        state.uploadStatus = 'failed'
+        state.error = action.payload?.message || action.error.message
+      })
+      .addCase(updateCharacter.pending, (state) => {
+        state.uploadStatus = 'loading'
+      })
+      .addCase(updateCharacter.fulfilled, (state, action) => {
+        state.uploadStatus = 'succeeded'
+        state.selectedCharacter = action.payload
+      })
+      .addCase(updateCharacter.rejected, (state, action) => {
+        state.uploadStatus = 'failed'
+        state.error = action.payload?.message || action.error.message
+      })
   }
 })
 
-export const { resetError, resetSelectedStatus, resetDeleteStatus, resetSearchStatus } = charactersSlice.actions
+export const {
+  resetError,
+  resetSelectedStatus,
+  resetDeleteStatus,
+  resetSearchStatus,
+  resetUploadStatus,
+} = charactersSlice.actions
 export default charactersSlice.reducer

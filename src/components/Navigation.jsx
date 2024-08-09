@@ -25,6 +25,9 @@ function Navigation() {
           <Link to="/anime" className="text-white">Anime</Link>
         </li>
         <li>
+          <Link to="/characters" className="text-white">Characters</Link>
+        </li>
+        <li>
           <Link to="/about" className="text-white">About</Link>
         </li>
         {isAuthenticated ? (

@@ -19,6 +19,24 @@ export const fetchCharacterById = createAsyncThunk('characters/fetchCharacterByI
   }
 })
 
+export const deleteCharacter = createAsyncThunk('characters/deleteCharacter', async (id = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+
+  try {
+    const response = await api({
+      method: 'delete',
+      url: `/character/${id}`,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
 export const charactersSlice = createSlice({
   name: 'characters',
   initialState: {
@@ -27,6 +45,7 @@ export const charactersSlice = createSlice({
     selectedCharacterAnime: [],
     status: 'idle',
     selectedStatus: 'idle',
+    deleteStatus: 'idle',
     error: null
   },
   reducers: {
@@ -35,6 +54,9 @@ export const charactersSlice = createSlice({
     },
     resetSelectedStatus: (state) => {
       state.selectedStatus = 'idle'
+    },
+    resetDeleteStatus: (state) => {
+      state.deleteStatus = 'idle'
     }
   },
   extraReducers: (builder) => {
@@ -62,8 +84,18 @@ export const charactersSlice = createSlice({
         state.selectedStatus = 'failed'
         state.error = action.payload?.message || action.error.message
       })
+      .addCase(deleteCharacter.pending, (state) => {
+        state.deleteStatus = 'loading'
+      })
+      .addCase(deleteCharacter.fulfilled, (state) => {
+        state.deleteStatus = 'succeeded'
+      })
+      .addCase(deleteCharacter.rejected, (state, action) => {
+        state.deleteStatus = 'failed'
+        state.error = action.payload?.message || action.error.message
+      })
   }
 })
 
-export const { resetError, resetSelectedStatus } = charactersSlice.actions
+export const { resetError, resetSelectedStatus, resetDeleteStatus } = charactersSlice.actions
 export default charactersSlice.reducer

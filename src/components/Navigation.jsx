@@ -28,6 +28,9 @@ function Navigation() {
           <Link to="/characters" className="text-white">Characters</Link>
         </li>
         <li>
+          <Link to="/profile" className="text-white">Profile</Link>
+        </li>
+        <li>
           <Link to="/about" className="text-white">About</Link>
         </li>
         {isAuthenticated ? (

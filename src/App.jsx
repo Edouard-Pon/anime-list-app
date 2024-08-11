@@ -7,6 +7,7 @@ import CharacterDetail from './pages/CharacterDetail'
 import NotFound from './pages/NotFound'
 import About from './pages/About.jsx'
 import Navigation from './components/Navigation.jsx'
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Navigation />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/anime" element={<Anime />} />
         <Route path="/anime/:id" element={<AnimeDetail />} />
         <Route path="/characters" element={<Characters />} />

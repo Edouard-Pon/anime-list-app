@@ -1,6 +1,6 @@
 export const getAnimeId = (anime) => anime._id || null
 export const getAnimeTitle = (anime) => anime.title || null
-export const getAnimeCoverImage = (anime) => anime.coverImagePath || null
+export const getAnimeCoverImage = (anime) => anime.coverImageUrl || null
 export const getAnimeDescription = (anime) => anime.description || null
 export const getAnimeType = (anime) => anime.type || null
 export const getAnimeEpisodes = (anime) => anime.episodes || null

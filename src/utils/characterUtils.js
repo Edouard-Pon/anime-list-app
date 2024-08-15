@@ -2,7 +2,7 @@ export const getCharacterId = (character) => character._id || null
 export const getCharacterName = (character) => character.name || null
 export const getCharacterOriginalName = (character) => character.originalName || null
 export const getCharacterDescription = (character) => character.description || null
-export const getCharacterImage = (character) => character.imagePath || null
+export const getCharacterImage = (character) => character.coverImageUrl || null
 export const getCharacterAnime = (character) => character.anime || []
 export const getCharacterUploadDate = (character) => character.uploadDate || null
 

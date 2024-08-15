@@ -5,7 +5,7 @@ export const characterPropTypes = PropTypes.shape({
   name: PropTypes.string.isRequired,
   originalName: PropTypes.string,
   description: PropTypes.string,
-  imagePath: PropTypes.string.isRequired,
+  coverImageUrl: PropTypes.string.isRequired,
   anime: PropTypes.array,
   uploadDate: PropTypes.string.isRequired,
 })

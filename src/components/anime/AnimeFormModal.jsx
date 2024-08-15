@@ -5,6 +5,7 @@ import { addAnime, updateAnime, resetUploadStatus, resetUpdateStatus } from '../
 import PropTypes from 'prop-types'
 import { animePropTypes } from '../../props/animePropTypes.js'
 import { format } from 'date-fns'
+import Loading from '../Loading'
 import {
   getAnimeCoverImage,
   getAnimeDescription, getAnimeDuration,
@@ -100,6 +101,11 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
       <div className="bg-white p-8 w-10/12" onClick={(e) => e.stopPropagation()}>
+        {(animeUpdateStatus === 'loading' || animeUploadStatus === 'loading') && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <Loading />
+          </div>
+        )}
         <div className="flex flex-row justify-between">
           <h2 className="text-2xl font-bold">{anime ? 'Edit Anime' : 'Add Anime'}</h2>
           {animeError && <p className="text-red-500 font-bold flex items-center">{animeError}</p>}

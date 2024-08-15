@@ -21,6 +21,7 @@ const CharacterDetail = () => {
   const character = useSelector((state) => state.characters.selectedCharacter)
   const animeList = useSelector((state) => state.characters.selectedCharacterAnime)
   const status = useSelector((state) => state.characters.selectedStatus)
+  const characterDeleteStatus = useSelector((state) => state.characters.deleteStatus)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -38,6 +39,11 @@ const CharacterDetail = () => {
 
   return (
     <div className="container mx-auto p-4 bg-gray-100 flex flex-wrap gap-6">
+      {(characterDeleteStatus === 'loading') && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loading />
+        </div>
+      )}
       <div className="w-64">
         <div className="w-64">
           <img className="rounded-lg object-cover" src={getCharacterImage(character)} alt={getCharacterName(character)}/>

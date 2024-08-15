@@ -28,6 +28,7 @@ const AnimeDetail = () => {
   const { id } = useParams()
   const anime = useSelector((state) => state.anime.selectedAnime)
   const status = useSelector((state) => state.anime.selectedStatus)
+  const animeDeleteStatus = useSelector((state) => state.anime.deleteStatus)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -45,6 +46,11 @@ const AnimeDetail = () => {
 
   return (
     <div className="container mx-auto p-4 bg-gray-100 flex flex-wrap gap-6">
+      {(animeDeleteStatus === 'loading') && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loading />
+        </div>
+      )}
       <div className="w-64">
         <div className="w-64">
           <img className="rounded-lg object-cover" src={getAnimeCoverImage(anime)} alt={getAnimeTitle(anime)}/>

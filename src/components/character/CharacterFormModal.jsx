@@ -9,6 +9,7 @@ import {
   getCharacterImage,
   getCharacterName, getCharacterId,
 } from '../../utils/characterUtils'
+import Loading from '../Loading'
 
 const CharacterFormModal = ({ character = null, isOpen, onClose }) => {
   const dispatch = useDispatch()
@@ -43,6 +44,11 @@ const CharacterFormModal = ({ character = null, isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
       <div className="bg-white p-8 w-2/3" onClick={(e) => e.stopPropagation()}>
+        {(characterUpdateStatus === 'loading' || characterUploadStatus === 'loading') && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <Loading />
+          </div>
+        )}
         <div className="flex flex-row justify-between">
           <h2 className="text-2xl font-bold">{character ? 'Edit Character' : 'Add Character'}</h2>
           {characterError && <p className="text-red-500 font-bold flex items-center">{characterError}</p>}

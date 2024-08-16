@@ -8,6 +8,7 @@ import ButtonDeleteAnime from '../components/anime/ButtonDeleteAnime.jsx'
 import ButtonEditAnime from '../components/anime/ButtonEditAnime.jsx'
 import { formatDate } from '../utils/utils'
 import Favorite from '../components/anime/Favorite'
+import AnimeStatusDropdown from '../components/anime-list/AnimeStatusDropdown.jsx'
 import {
   getAnimeCoverImage,
   getAnimeDescription,
@@ -75,8 +76,11 @@ const AnimeDetail = () => {
         <div className="w-64">
           <img className="rounded-lg object-cover" src={getAnimeCoverImage(anime)} alt={getAnimeTitle(anime)}/>
         </div>
-        <div className="flex flex-col gap-1 p-2 mt-6 bg-gray-200 rounded-lg">
-          <Favorite isFavorite={isFavorite} handleFavorite={() => handleFavorite(getAnimeId(anime))} />
+        <div className="flex gap-1 p-2 mt-6 bg-gray-200 rounded-lg">
+          <Favorite isFavorite={isFavorite} handleFavorite={() => handleFavorite(getAnimeId(anime))}/>
+        </div>
+        <div className="flex gap-1 p-2 mt-6 bg-gray-200 rounded-lg">
+          <AnimeStatusDropdown animeId={id}/>
         </div>
         <div className="flex flex-col gap-1 p-2 mt-6 bg-gray-200 rounded-lg">
           <div className="px-3 py-1 rounded-lg hover:bg-gray-100">

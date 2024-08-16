@@ -53,6 +53,108 @@ export const removeAnimeFromFavorites = createAsyncThunk('animeList/removeAnimeF
   }
 })
 
+export const addAnimeToWatched = createAsyncThunk('animeList/addAnimeToWatched', async (animeId = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+  const userId = getUserId(getState().auth.user)
+
+  try {
+    const response = await api.post(`/anime-list/${userId}/watched`, { animeId }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
+export const removeAnimeFromWatched = createAsyncThunk('animeList/removeAnimeFromWatched', async (animeId = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+  const userId = getUserId(getState().auth.user)
+
+  try {
+    const response = await api.delete(`/anime-list/${userId}/watched/${animeId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
+export const addAnimeToToWatch = createAsyncThunk('animeList/addAnimeToToWatch', async (animeId = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+  const userId = getUserId(getState().auth.user)
+
+  try {
+    const response = await api.post(`/anime-list/${userId}/toWatch`, { animeId }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
+export const removeAnimeFromToWatch = createAsyncThunk('animeList/removeAnimeFromToWatch', async (animeId = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+  const userId = getUserId(getState().auth.user)
+
+  try {
+    const response = await api.delete(`/anime-list/${userId}/toWatch/${animeId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
+export const addAnimeToAbandoned = createAsyncThunk('animeList/addAnimeToAbandoned', async (animeId = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+  const userId = getUserId(getState().auth.user)
+
+  try {
+    const response = await api.post(`/anime-list/${userId}/abandoned`, { animeId }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
+export const removeAnimeFromAbandoned = createAsyncThunk('animeList/removeAnimeFromAbandoned', async (animeId = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+  const userId = getUserId(getState().auth.user)
+
+  try {
+    const response = await api.delete(`/anime-list/${userId}/abandoned/${animeId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
 export const animeListSlice = createSlice({
   name: 'animeList',
   initialState: {
@@ -95,6 +197,18 @@ export const animeListSlice = createSlice({
       .addCase(removeAnimeFromFavorites.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.payload?.message || action.error.message
+      })
+      .addCase(addAnimeToWatched.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.animeList = action.payload.animeList
+      })
+      .addCase(addAnimeToToWatch.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.animeList = action.payload.animeList
+      })
+      .addCase(addAnimeToAbandoned.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.animeList = action.payload.animeList
       })
   }
 })

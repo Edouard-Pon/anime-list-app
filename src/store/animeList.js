@@ -19,6 +19,40 @@ export const fetchAnimeList = createAsyncThunk('animeList/fetchAnimeList', async
   }
 })
 
+export const addAnimeToFavorites = createAsyncThunk('animeList/addAnimeToFavorites', async (animeId = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+  const userId = getUserId(getState().auth.user)
+
+  try {
+    const response = await api.post(`/anime-list/${userId}/favorites`, { animeId }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
+export const removeAnimeFromFavorites = createAsyncThunk('animeList/removeAnimeFromFavorites', async (animeId = '', { getState, rejectWithValue }) => {
+  const token = getState().auth.token
+  const userId = getUserId(getState().auth.user)
+
+  try {
+    const response = await api.delete(`/anime-list/${userId}/favorites/${animeId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
 export const animeListSlice = createSlice({
   name: 'animeList',
   initialState: {
@@ -37,6 +71,28 @@ export const animeListSlice = createSlice({
         state.animeList = action.payload
       })
       .addCase(fetchAnimeList.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.payload?.message || action.error.message
+      })
+      .addCase(addAnimeToFavorites.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.animeList = action.payload.animeList
+      })
+      .addCase(addAnimeToFavorites.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(addAnimeToFavorites.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.payload?.message || action.error.message
+      })
+      .addCase(removeAnimeFromFavorites.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.animeList = action.payload.animeList
+      })
+      .addCase(removeAnimeFromFavorites.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(removeAnimeFromFavorites.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.payload?.message || action.error.message
       })

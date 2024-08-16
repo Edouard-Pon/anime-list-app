@@ -2,8 +2,13 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../components/Loading'
 import { fetchAnimeList } from '../store/animeList'
-import Favorites from '../components/anime-list/Favorites'
-import {getAnimeListFavorites} from '../utils/animeListUtils.js'
+import AnimeList from '../components/anime-list/AnimeList'
+import {
+  getAnimeListAbandoned,
+  getAnimeListFavorites,
+  getAnimeListToWatch,
+  getAnimeListWatched
+} from '../utils/animeListUtils.js'
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user)
@@ -33,12 +38,9 @@ const Profile = () => {
         </div>
       </div>
       {animeListStatus === 'loading' && <Loading />}
-      {animeList.favorites?.length > 0 && (
-        <div className="p-6">
-          <h2 className="text-2xl font-bold">Favorites</h2>
-          <Favorites favorites={getAnimeListFavorites(animeList)} />
-        </div>
-      )}
+        {animeList && (
+          <AnimeList favorites={getAnimeListFavorites(animeList)} toWatch={getAnimeListToWatch(animeList)} watched={getAnimeListWatched(animeList)} abandoned={getAnimeListAbandoned(animeList)} />
+        )}
     </div>
   )
 }

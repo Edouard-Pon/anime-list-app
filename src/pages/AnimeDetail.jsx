@@ -1,11 +1,13 @@
 import { useParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAnimeById, resetSelectedStatus } from '../store/anime'
+import { addAnimeToFavorites, fetchAnimeList, removeAnimeFromFavorites } from '../store/animeList'
 import Loading from '../components/Loading'
 import ButtonDeleteAnime from '../components/anime/ButtonDeleteAnime.jsx'
 import ButtonEditAnime from '../components/anime/ButtonEditAnime.jsx'
 import { formatDate } from '../utils/utils'
+import Favorite from '../components/anime/Favorite'
 import {
   getAnimeCoverImage,
   getAnimeDescription,
@@ -23,16 +25,28 @@ import {
   getAnimeType,
   getAnimeUploadDate
 } from '../utils/animeUtils.js';
+import {getAnimeListAnime, getAnimeListFavorites} from '../utils/animeListUtils.js'
 
 const AnimeDetail = () => {
   const { id } = useParams()
   const anime = useSelector((state) => state.anime.selectedAnime)
+  const animeList = useSelector((state) => state.animeList.animeList)
   const status = useSelector((state) => state.anime.selectedStatus)
   const animeDeleteStatus = useSelector((state) => state.anime.deleteStatus)
   const dispatch = useDispatch()
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  const handleFavorite = (animeId) => {
+    if (isFavorite) {
+      dispatch(removeAnimeFromFavorites(animeId))
+    } else {
+      dispatch(addAnimeToFavorites(animeId))
+    }
+  }
 
   useEffect(() => {
     dispatch(fetchAnimeById(id))
+    dispatch(fetchAnimeList())
   }, [id, dispatch])
 
   useEffect(() => {
@@ -40,6 +54,12 @@ const AnimeDetail = () => {
       dispatch(resetSelectedStatus())
     }
   }, [status, dispatch])
+
+  useEffect(() => {
+    if (getAnimeListFavorites(animeList) && anime) {
+      setIsFavorite(getAnimeListFavorites(animeList).some((item) => getAnimeId(getAnimeListAnime(item)) === getAnimeId(anime)))
+    }
+  }, [animeList, anime])
 
   if (status === 'loading') return <Loading />
   if (status === 'failed') return <div>Error fetching anime</div>
@@ -54,6 +74,9 @@ const AnimeDetail = () => {
       <div className="w-64">
         <div className="w-64">
           <img className="rounded-lg object-cover" src={getAnimeCoverImage(anime)} alt={getAnimeTitle(anime)}/>
+        </div>
+        <div className="flex flex-col gap-1 p-2 mt-6 bg-gray-200 rounded-lg">
+          <Favorite isFavorite={isFavorite} handleFavorite={() => handleFavorite(getAnimeId(anime))} />
         </div>
         <div className="flex flex-col gap-1 p-2 mt-6 bg-gray-200 rounded-lg">
           <div className="px-3 py-1 rounded-lg hover:bg-gray-100">

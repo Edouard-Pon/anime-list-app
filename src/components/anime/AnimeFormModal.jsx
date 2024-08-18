@@ -2,11 +2,13 @@ import {PlusIcon, XMarkIcon} from '@heroicons/react/24/solid'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addAnime, updateAnime, resetUploadStatus, resetUpdateStatus } from '../../store/anime.js'
+import { searchCharacters } from '../../store/characters.js'
 import PropTypes from 'prop-types'
 import { animePropTypes } from '../../props/animePropTypes.js'
 import { format } from 'date-fns'
 import Loading from '../Loading'
 import {
+  getAnimeCharacters,
   getAnimeCoverImage,
   getAnimeDescription, getAnimeDuration,
   getAnimeEpisodes, getAnimeExternalLink, getAnimeGenres,
@@ -15,13 +17,17 @@ import {
   getAnimeTitle,
   getAnimeType
 } from '../../utils/animeUtils.js'
+import {getCharacterId, getCharacterName} from '../../utils/characterUtils.js'
 
 const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
   const dispatch = useDispatch()
+
   const animeStatus = useSelector((state) => state.anime.status)
   const animeUploadStatus = useSelector((state) => state.anime.uploadStatus)
   const animeUpdateStatus = useSelector((state) => state.anime.updateStatus)
   const animeError = useSelector((state) => state.anime.error)
+
+  const charactersList = useSelector((state) => state.characters.characters)
 
   const [title, setTitle] = useState(anime ? getAnimeTitle(anime) : '')
   const [type, setType] = useState(anime ? getAnimeType(anime) : '')
@@ -36,8 +42,10 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
   const [duration, setDuration] = useState(anime ? getAnimeDuration(anime) : '')
   const [rating, setRating] = useState(anime ? getAnimeRating(anime) : '')
   // const [themes, setThemes] = useState([]) // TODO - WIP
-  // const [character, setCharacter] = useState([]) // TODO - WIP - character - add input with search character method
+  const [characters, setCharacters] = useState(anime ? getAnimeCharacters(anime) : [])
   const [previewUploadCover, setPreviewUploadCover] = useState(!anime)
+  const [isCharactersOpen, setIsCharactersOpen] = useState(false)
+  const [charactersSearch, setCharactersSearch] = useState('')
 
   const handleSaveAnime = () => {
     if (anime) {
@@ -69,7 +77,8 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
         cover,
         genres,
         duration,
-        rating
+        rating,
+        characters
       }))
     }
   }
@@ -96,11 +105,15 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
     }
   }, [animeUploadStatus, animeUpdateStatus, onClose, dispatch])
 
+  useEffect(() => {
+    dispatch(searchCharacters({ name: charactersSearch }))
+  }, [charactersSearch, dispatch])
+
   if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
-      <div className="bg-white p-8 w-10/12" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white p-8 w-10/12 rounded" onClick={(e) => e.stopPropagation()}>
         {(animeUpdateStatus === 'loading' || animeUploadStatus === 'loading') && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <Loading />
@@ -109,9 +122,15 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
         <div className="flex flex-row justify-between">
           <h2 className="text-2xl font-bold">{anime ? 'Edit Anime' : 'Add Anime'}</h2>
           {animeError && <p className="text-red-500 font-bold flex items-center">{animeError}</p>}
+          <button
+            onClick={ () => setIsCharactersOpen(!isCharactersOpen) }
+            className={`transition-colors duration-300 ${isCharactersOpen ? 'bg-blue-500 text-white rounded p-2' : 'bg-gray-200 text-black rounded p-2'}`}
+          >
+            Attach Characters
+          </button>
         </div>
         <div className="flex flex-row gap-8 mt-4">
-          <div className="basis-1/4">
+          <div className="basis-1/5">
             <label className="font-semibold text-gray-700" htmlFor="cover">Cover</label>
             <input
               type="file"
@@ -130,7 +149,7 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
               </div>
             }
           </div>
-          <div className="basis-3/4">
+          <div className="flex-grow">
             <div className="grid grid-cols-3 gap-6">
               <div>
                 <label className="font-semibold text-gray-700" htmlFor="title">Title</label>
@@ -292,6 +311,62 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
               </button>
             </div>
           </div>
+          {isCharactersOpen && (
+            <div className="basis-1/5">
+              <div>
+                <label className="font-semibold text-gray-700" htmlFor="characters">Search Characters</label>
+                <input
+                  type="text"
+                  placeholder="Search characters"
+                  value={charactersSearch}
+                  onChange={(e) => setCharactersSearch(e.target.value)}
+                  className="border border-gray-300 rounded p-2 w-full mt-1.5"
+                />
+                {charactersSearch && (
+                  <div className="relative">
+                    {charactersList.filter((character) => getCharacterName(character).toLowerCase().includes(charactersSearch.toLowerCase())).length > 0 && (
+                      <div
+                        className="absolute z-10 bg-white border border-gray-300 rounded mt-1 w-full max-h-60 overflow-y-auto">
+                        {charactersList.filter((character) => getCharacterName(character).toLowerCase().includes(charactersSearch.toLowerCase())).map((character) => (
+                          <div key={getCharacterId(character)}
+                               className="flex items-center justify-between p-2 hover:bg-gray-100">
+                            <p>{getCharacterName(character)}</p>
+                            <button
+                              onClick={() => {
+                                if (!characters.some((c) => getCharacterId(c) === getCharacterId(character))) {
+                                  setCharacters([...characters, character])
+                                  setCharactersSearch('')
+                                }
+                              }}
+                              className="bg-blue-500 text-white rounded p-0.5"
+                            >
+                              <PlusIcon className="h-5 w-5"/>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="mt-4">
+                <label className="font-semibold text-gray-700" htmlFor="attachedCharacters">Attached Characters</label>
+                <div className="flex flex-col gap-2 mt-1.5">
+                  {characters.map((character) => (
+                    <div key={getCharacterId(character)} className="flex items-center justify-between">
+                      <p>{getCharacterName(character)}</p>
+                      <button
+                        onClick={() => setCharacters(characters.filter((c) => getCharacterId(c) !== getCharacterId(character)))}
+                        className="bg-red-500 text-white rounded p-0.5"
+                      >
+                        <XMarkIcon className="h-5 w-5"/>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ export const getCharacterDescription = (character) => character.description || n
 export const getCharacterImage = (character) => character.coverImageUrl || null
 export const getCharacterAnime = (character) => character.anime || []
 export const getCharacterUploadDate = (character) => character.uploadDate || null
+export const getCharactersIdArray = (characters) => characters.map((character) => getCharacterId(character))
 
 export const buildCharacterFormData = (character) => {
   const formData = new FormData()

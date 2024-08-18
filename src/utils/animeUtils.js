@@ -1,3 +1,5 @@
+import { getCharactersIdArray } from './characterUtils'
+
 export const getAnimeId = (anime) => anime._id || null
 export const getAnimeTitle = (anime) => anime.title || null
 export const getAnimeCoverImage = (anime) => anime.coverImageUrl || null
@@ -27,7 +29,8 @@ export const buildAnimeFormData = (anime) => {
   formData.append('externalLink', anime.externalLink)
   formData.append('duration', anime.duration)
   formData.append('rating', anime.rating)
-  formData.append('genres', anime.genres)
+  formData.append('genres', JSON.stringify(anime.genres))
   formData.append('cover', anime.cover)
+  formData.append('characters', JSON.stringify(getCharactersIdArray(anime.characters)))
   return formData
 }

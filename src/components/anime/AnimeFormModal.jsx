@@ -62,7 +62,8 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
         cover,
         genres,
         duration,
-        rating
+        rating,
+        characters
       }))
     } else {
       dispatch(addAnime({
@@ -149,7 +150,7 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
               </div>
             }
           </div>
-          <div className="flex-grow">
+          <div className={`${isCharactersOpen ? 'basis-3/5' : 'basis-4/5'}`}>
             <div className="grid grid-cols-3 gap-6">
               <div>
                 <label className="font-semibold text-gray-700" htmlFor="title">Title</label>

@@ -15,6 +15,6 @@ export const animePropTypes = PropTypes.shape({
   rating: PropTypes.number,
   genres: PropTypes.array.isRequired,
   themes: PropTypes.array,
-  character: PropTypes.array,
+  characters: PropTypes.array,
   coverImageUrl: PropTypes.string.isRequired,
 })

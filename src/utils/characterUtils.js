@@ -1,3 +1,5 @@
+import { getAnimeIdArray } from './animeUtils'
+
 export const getCharacterId = (character) => character._id || null
 export const getCharacterName = (character) => character.name || null
 export const getCharacterOriginalName = (character) => character.originalName || null
@@ -13,6 +15,6 @@ export const buildCharacterFormData = (character) => {
   formData.append('originalName', character.originalName)
   formData.append('description', character.description)
   formData.append('image', character.image)
-  formData.append('anime', character.anime)
+  formData.append('anime', JSON.stringify(getAnimeIdArray(character.anime)))
   return formData
 }

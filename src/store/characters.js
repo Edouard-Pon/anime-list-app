@@ -103,7 +103,6 @@ export const charactersSlice = createSlice({
   initialState: {
     characters: [],
     selectedCharacter: {},
-    selectedCharacterAnime: [],
     status: 'idle',
     selectedStatus: 'idle',
     uploadStatus: 'idle',
@@ -151,7 +150,6 @@ export const charactersSlice = createSlice({
       .addCase(fetchCharacterById.fulfilled, (state, action) => {
         state.selectedStatus = 'succeeded'
         state.selectedCharacter = action.payload.character
-        state.selectedCharacterAnime = action.payload.anime
       })
       .addCase(fetchCharacterById.rejected, (state, action) => {
         state.selectedStatus = 'failed'

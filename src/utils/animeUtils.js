@@ -16,6 +16,7 @@ export const getAnimeRating = (anime) => anime.rating || null
 export const getAnimeGenres = (anime) => anime.genres || []
 export const getAnimeThemes = (anime) => anime.themes || []
 export const getAnimeCharacters = (anime) => anime.characters || []
+export const getAnimeIdArray = (animes) => animes.map(anime => getAnimeId(anime))
 
 export const buildAnimeFormData = (anime) => {
   const formData = new FormData()

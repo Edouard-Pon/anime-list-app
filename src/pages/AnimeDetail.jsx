@@ -9,6 +9,7 @@ import ButtonEditAnime from '../components/anime/ButtonEditAnime.jsx'
 import { formatDate } from '../utils/utils'
 import Favorite from '../components/anime/Favorite'
 import AnimeStatusDropdown from '../components/anime-list/AnimeStatusDropdown.jsx'
+import CharactersList from '../components/anime/CharactersList.jsx'
 import {
   getAnimeCoverImage,
   getAnimeDescription,
@@ -24,7 +25,7 @@ import {
   getAnimeThemes,
   getAnimeTitle,
   getAnimeType,
-  getAnimeUploadDate
+  getAnimeUploadDate, getAnimeCharacters
 } from '../utils/animeUtils.js';
 import {getAnimeListAnime, getAnimeListFavorites} from '../utils/animeListUtils.js'
 
@@ -149,13 +150,19 @@ const AnimeDetail = () => {
         <div className="mb-4 flex justify-between">
           <h1 className="text-3xl">{getAnimeTitle(anime)}</h1>
           <div className="flex flex-row gap-3">
-            {anime && getAnimeId(anime) && <ButtonEditAnime anime={anime} />}
-            <ButtonDeleteAnime id={id} />
+            {anime && getAnimeId(anime) && <ButtonEditAnime anime={anime}/>}
+            <ButtonDeleteAnime id={id}/>
           </div>
         </div>
         {getAnimeDescription(anime) && (
           <div className="rounded-lg bg-gray-300 p-4">
             <p className="text-sm">{getAnimeDescription(anime)}</p>
+          </div>
+        )}
+        {getAnimeCharacters(anime).length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-2xl mb-6">Related Characters</h2>
+            <CharactersList anime={anime}/>
           </div>
         )}
       </div>

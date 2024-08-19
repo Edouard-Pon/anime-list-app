@@ -10,16 +10,14 @@ import {
   getCharacterImage,
   getCharacterUploadDate,
   getCharacterOriginalName,
-  getCharacterDescription, getCharacterId,
+  getCharacterDescription, getCharacterId, getCharacterAnime,
 } from '../utils/characterUtils';
-import AnimeCard from '../components/anime/AnimeCard.jsx';
-import {getAnimeId} from '../utils/animeUtils.js';
-import ButtonEditCharacter from '../components/character/ButtonEditCharacter.jsx';
+import ButtonEditCharacter from '../components/character/ButtonEditCharacter.jsx'
+import AnimeList from '../components/character/AnimeList.jsx'
 
 const CharacterDetail = () => {
   const { id } = useParams()
   const character = useSelector((state) => state.characters.selectedCharacter)
-  const animeList = useSelector((state) => state.characters.selectedCharacterAnime)
   const status = useSelector((state) => state.characters.selectedStatus)
   const characterDeleteStatus = useSelector((state) => state.characters.deleteStatus)
   const dispatch = useDispatch()
@@ -78,11 +76,12 @@ const CharacterDetail = () => {
             <p className="text-sm">{getCharacterDescription(character)}</p>
           </div>
         )}
-        <div className="mt-6 flex flex-wrap gap-6">
-          {animeList.map(anime => (
-            <AnimeCard key={getAnimeId(anime)} anime={anime}/>
-          ))}
-        </div>
+        {getCharacterAnime(character).length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-2xl mb-6">Related Anime</h2>
+            <AnimeList character={character} />
+          </div>
+        )}
       </div>
     </div>
   )

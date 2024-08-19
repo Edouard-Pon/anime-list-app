@@ -146,7 +146,7 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
             {cover &&
               <div className="mt-4">
                 <label className="font-semibold text-gray-700" htmlFor="cover">Cover Preview</label>
-                  <img className="mt-1.5 mx-auto" src={!previewUploadCover ? cover : URL.createObjectURL(cover)} alt="Cover Preview" />
+                  <img className="mt-1.5 mx-auto rounded" src={!previewUploadCover ? cover : URL.createObjectURL(cover)} alt="Cover Preview" />
               </div>
             }
           </div>
@@ -323,30 +323,27 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
                   onChange={(e) => setCharactersSearch(e.target.value)}
                   className="border border-gray-300 rounded p-2 w-full mt-1.5"
                 />
-                {charactersSearch && (
+                {charactersSearch && charactersList.length > 0 && (
                   <div className="relative">
-                    {charactersList.filter((character) => getCharacterName(character).toLowerCase().includes(charactersSearch.toLowerCase())).length > 0 && (
-                      <div
-                        className="absolute z-10 bg-white border border-gray-300 rounded mt-1 w-full max-h-60 overflow-y-auto">
-                        {charactersList.filter((character) => getCharacterName(character).toLowerCase().includes(charactersSearch.toLowerCase())).map((character) => (
-                          <div key={getCharacterId(character)}
-                               className="flex items-center justify-between p-2 hover:bg-gray-100">
-                            <p>{getCharacterName(character)}</p>
-                            <button
-                              onClick={() => {
-                                if (!characters.some((c) => getCharacterId(c) === getCharacterId(character))) {
-                                  setCharacters([...characters, character])
-                                  setCharactersSearch('')
-                                }
-                              }}
-                              className="bg-blue-500 text-white rounded p-0.5"
-                            >
-                              <PlusIcon className="h-5 w-5"/>
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <div className="absolute z-10 bg-white border border-gray-300 rounded mt-1 w-full max-h-60 overflow-y-auto">
+                      {charactersList.map((character) => (
+                        <div key={getCharacterId(character)}
+                             className="flex items-center justify-between p-2 hover:bg-gray-100">
+                          <p>{getCharacterName(character)}</p>
+                          <button
+                            onClick={() => {
+                              if (!characters.some((c) => getCharacterId(c) === getCharacterId(character))) {
+                                setCharacters([...characters, character])
+                                setCharactersSearch('')
+                              }
+                            }}
+                            className="bg-blue-500 text-white rounded p-0.5"
+                          >
+                            <PlusIcon className="h-5 w-5"/>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -354,7 +351,7 @@ const AnimeFormModal = ({ isOpen, onClose, anime = null }) => {
                 <label className="font-semibold text-gray-700" htmlFor="attachedCharacters">Attached Characters</label>
                 <div className="flex flex-col gap-2 mt-1.5">
                   {characters.map((character) => (
-                    <div key={getCharacterId(character)} className="flex items-center justify-between">
+                    <div key={getCharacterId(character)} className="flex items-center justify-between rounded p-2 bg-gray-100">
                       <p>{getCharacterName(character)}</p>
                       <button
                         onClick={() => setCharacters(characters.filter((c) => getCharacterId(c) !== getCharacterId(character)))}

@@ -4,9 +4,11 @@ import {
   addAnimeToToWatch,
   addAnimeToWatched,
   addAnimeToAbandoned,
+  addAnimeToWatching,
   removeAnimeFromToWatch,
   removeAnimeFromWatched,
   removeAnimeFromAbandoned,
+  removeAnimeFromWatching,
 } from '../../store/animeList.js'
 import {fetchAnimeList} from '../../store/animeList.js'
 import {useDispatch, useSelector} from 'react-redux'
@@ -33,6 +35,9 @@ const AnimeStatusDropdown = ({ animeId }) => {
     if (currentStatus === status) return
 
     switch (status) {
+      case 'watching':
+          dispatch(addAnimeToWatching(animeId))
+        break
       case 'toWatch':
           dispatch(addAnimeToToWatch(animeId))
         break
@@ -49,6 +54,9 @@ const AnimeStatusDropdown = ({ animeId }) => {
     if (currentStatus === 'default') return
 
     switch (currentStatus) {
+      case 'watching':
+          dispatch(removeAnimeFromWatching(animeId))
+        break
       case 'toWatch':
           dispatch(removeAnimeFromToWatch(animeId))
         break
@@ -67,8 +75,9 @@ const AnimeStatusDropdown = ({ animeId }) => {
   return (
     <select value={status} onChange={e => setStatus(e.target.value)}>
       <option value="default">Select status</option>
-      <option value="toWatch">To Watch</option>
+      <option value="watching">Watching</option>
       <option value="watched">Watched</option>
+      <option value="toWatch">To Watch</option>
       <option value="abandoned">Abandoned</option>
     </select>
   )

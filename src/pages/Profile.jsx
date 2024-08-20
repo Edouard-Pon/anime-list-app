@@ -7,7 +7,7 @@ import {
   getAnimeListAbandoned,
   getAnimeListFavorites,
   getAnimeListToWatch,
-  getAnimeListWatched
+  getAnimeListWatched, getAnimeListWatching
 } from '../utils/animeListUtils.js'
 
 const Profile = () => {
@@ -39,7 +39,7 @@ const Profile = () => {
       </div>
       {animeListStatus === 'loading' && <Loading />}
         {animeList && (
-          <AnimeList favorites={getAnimeListFavorites(animeList)} toWatch={getAnimeListToWatch(animeList)} watched={getAnimeListWatched(animeList)} abandoned={getAnimeListAbandoned(animeList)} />
+          <AnimeList favorites={getAnimeListFavorites(animeList)} toWatch={getAnimeListToWatch(animeList)} watched={getAnimeListWatched(animeList)} abandoned={getAnimeListAbandoned(animeList)} watching={getAnimeListWatching(animeList)} />
         )}
     </div>
   )

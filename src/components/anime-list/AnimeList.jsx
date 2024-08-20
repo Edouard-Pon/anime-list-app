@@ -5,8 +5,9 @@ import Favorites from './Favorites'
 import ToWatch from './ToWatch'
 import Watched from './Watched'
 import Abandoned from './Abandoned'
+import Watching from './Watching'
 
-const AnimeList = ({ favorites, toWatch, watched, abandoned }) => {
+const AnimeList = ({ favorites, toWatch, watched, abandoned, watching }) => {
   const [selectedTab, setSelectedTab] = useState('favorites')
 
   return (
@@ -20,6 +21,14 @@ const AnimeList = ({ favorites, toWatch, watched, abandoned }) => {
           onClick={() => setSelectedTab('favorites')}
         >
           Favorites
+        </button>
+        <button
+          className={`${
+            selectedTab === 'watching' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+          } px-4 py-2 rounded`}
+          onClick={() => setSelectedTab('watching')}
+        >
+          Watching
         </button>
         <button
           className={`${
@@ -47,6 +56,7 @@ const AnimeList = ({ favorites, toWatch, watched, abandoned }) => {
         </button>
       </div>
       {selectedTab === 'favorites' && <Favorites favorites={favorites} />}
+      {selectedTab === 'watching' && <Watching watching={watching} />}
       {selectedTab === 'toWatch' && <ToWatch toWatch={toWatch} />}
       {selectedTab === 'watched' && <Watched watched={watched} />}
       {selectedTab === 'abandoned' && <Abandoned abandoned={abandoned} />}
@@ -56,6 +66,12 @@ const AnimeList = ({ favorites, toWatch, watched, abandoned }) => {
 
 AnimeList.propTypes = {
   favorites: PropTypes.arrayOf(
+    PropTypes.shape({
+      animeId: animePropTypes.isRequired,
+      dateAdded: PropTypes.string.isRequired
+    })
+  ).isRequired,
+  watching: PropTypes.arrayOf(
     PropTypes.shape({
       animeId: animePropTypes.isRequired,
       dateAdded: PropTypes.string.isRequired

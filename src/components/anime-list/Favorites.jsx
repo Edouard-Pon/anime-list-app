@@ -5,9 +5,9 @@ import { getAnimeId } from '../../utils/animeUtils'
 
 const Favorites = ({ favorites }) => {
   return (
-    <div className="mt-6 flex flex-wrap gap-6">
-      {favorites.map(({ animeId }) => (
-        <AnimeCard key={getAnimeId(animeId)} anime={animeId} />
+    <div className="mt-6 grid justify-items-center gap-y-6" style={{gridTemplateColumns: "repeat(auto-fit, minmax(256px, 1fr))"}}>
+      {favorites.map(({animeId}) => (
+        <AnimeCard key={getAnimeId(animeId)} anime={animeId}/>
       ))}
     </div>
   )

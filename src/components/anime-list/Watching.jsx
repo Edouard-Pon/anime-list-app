@@ -5,9 +5,9 @@ import { getAnimeId } from '../../utils/animeUtils'
 
 const Watching = ({ watching }) => {
   return (
-    <div className="mt-6 flex flex-wrap gap-6">
-      {watching.map(({ animeId }) => (
-        <AnimeCard key={getAnimeId(animeId)} anime={animeId} />
+    <div className="mt-6 grid justify-items-center gap-y-6" style={{gridTemplateColumns: "repeat(auto-fit, minmax(256px, 1fr))"}}>
+      {watching.map(({animeId}) => (
+        <AnimeCard key={getAnimeId(animeId)} anime={animeId}/>
       ))}
     </div>
   )

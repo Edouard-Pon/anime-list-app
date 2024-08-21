@@ -67,7 +67,7 @@ const AnimeDetail = () => {
   if (status === 'failed') return <div>Error fetching anime</div>
 
   return (
-    <div className="container mx-auto p-4 bg-gray-100 flex flex-wrap gap-6">
+    <div className="container mx-auto p-4 bg-gray-100 flex gap-6">
       {(animeDeleteStatus === 'loading') && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <Loading />

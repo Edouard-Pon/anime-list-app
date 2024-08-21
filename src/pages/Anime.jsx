@@ -40,7 +40,7 @@ const Anime = () => {
         <SearchBar setIsSearching={setIsSearching} />
       </div>
       {((isSearching && searchStatus === 'loading') || status === 'loading') && <Loading />}
-      <div className="grid justify-items-center gap-6 p-6" style={{gridTemplateColumns: "repeat(auto-fit, minmax(208px, 1fr))"}}>
+      <div className="grid justify-items-center gap-y-6 p-6" style={{gridTemplateColumns: "repeat(auto-fit, minmax(256px, 1fr))"}}>
         {animeList.map(anime => (
           <AnimeCard key={getAnimeId(anime)} anime={anime}/>
         ))}

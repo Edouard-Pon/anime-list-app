@@ -1,7 +1,8 @@
+import he from 'he'
 import { getCharactersIdArray } from './characterUtils'
 
 export const getAnimeId = (anime) => anime._id || null
-export const getAnimeTitle = (anime) => anime.title || null
+export const getAnimeTitle = (anime) => anime.title ? he.decode(anime.title) : null
 export const getAnimeCoverImage = (anime) => anime.coverImageUrl || null
 export const getAnimeDescription = (anime) => anime.description || null
 export const getAnimeType = (anime) => anime.type || null

@@ -55,6 +55,33 @@ const AnimeList = ({ favorites, toWatch, watched, abandoned, watching }) => {
           Abandoned
         </button>
       </div>
+      <div className="mt-6">
+        {selectedTab === 'favorites' && favorites.length === 0 && (
+          <p className="text-center text-2xl font-bold">No favorites yet</p>
+        ) || selectedTab === 'favorites' && (
+          <h2 className="text-2xl font-bold">Favorites {favorites.length}</h2>
+        )}
+        {selectedTab === 'watching' && watching.length === 0 && (
+          <p className="text-center text-2xl font-bold">Not watching anything</p>
+        ) || selectedTab === 'watching' && (
+          <h2 className="text-2xl font-bold">Watching {watching.length}</h2>
+        )}
+        {selectedTab === 'toWatch' && toWatch.length === 0 && (
+          <p className="text-center text-2xl font-bold">No anime to watch</p>
+        ) || selectedTab === 'toWatch' && (
+          <h2 className="text-2xl font-bold">To watch {toWatch.length}</h2>
+        )}
+        {selectedTab === 'watched' && watched.length === 0 && (
+          <p className="text-center text-2xl font-bold">No anime watched yet</p>
+        ) || selectedTab === 'watched' && (
+          <h2 className="text-2xl font-bold">Watched {watched.length}</h2>
+        )}
+        {selectedTab === 'abandoned' && abandoned.length === 0 && (
+          <p className="text-center text-2xl font-bold">No anime abandoned yet</p>
+        ) || selectedTab === 'abandoned' && (
+          <h2 className="text-2xl font-bold">Abandoned {abandoned.length}</h2>
+        )}
+      </div>
       {selectedTab === 'favorites' && <Favorites favorites={favorites} />}
       {selectedTab === 'watching' && <Watching watching={watching} />}
       {selectedTab === 'toWatch' && <ToWatch toWatch={toWatch} />}

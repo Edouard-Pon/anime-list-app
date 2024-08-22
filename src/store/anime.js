@@ -135,7 +135,7 @@ export const animeSlice = createSlice({
     })
     builder.addCase(addAnime.fulfilled, (state, action) => {
       state.uploadStatus = 'succeeded'
-      state.anime.push(action.payload)
+      state.anime.unshift(action.payload)
     })
     builder.addCase(addAnime.rejected, (state, action) => {
       state.uploadStatus = 'failed'

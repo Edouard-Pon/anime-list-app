@@ -13,7 +13,7 @@ const ButtonEditCharacter = ({ character }) => {
   return (
     <div>
       <button
-        className="bg-blue-500 w-24 text-white rounded p-2 hover:bg-blue-600 disabled:bg-red-300"
+        className="bg-blue-500 w-24 h-12 text-white rounded p-2 hover:bg-blue-600 disabled:bg-red-300"
         onClick={() => setModalOpen(true)}
       >
         Edit

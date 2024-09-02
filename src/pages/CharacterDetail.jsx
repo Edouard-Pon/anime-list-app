@@ -36,7 +36,7 @@ const CharacterDetail = () => {
   if (status === 'failed') return <div>Error fetching character</div>
 
   return (
-    <div className="container mx-auto p-4 bg-gray-100 flex flex-wrap gap-6">
+    <div className="container mx-auto p-4 bg-gray-100 flex gap-6">
       {(characterDeleteStatus === 'loading') && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <Loading />
@@ -67,8 +67,8 @@ const CharacterDetail = () => {
         <div className="mb-4 flex justify-between">
           <h1 className="text-3xl">{getCharacterName(character)}</h1>
           <div className="flex flex-row gap-3">
-            {character && getCharacterId(character) && <ButtonEditCharacter character={character} />}
-            <ButtonDeleteCharacter id={id} />
+            {character && getCharacterId(character) && <ButtonEditCharacter character={character}/>}
+            <ButtonDeleteCharacter id={id}/>
           </div>
         </div>
         {getCharacterDescription(character) && (
@@ -79,7 +79,7 @@ const CharacterDetail = () => {
         {getCharacterAnime(character).length > 0 && (
           <div className="mt-6">
             <h2 className="text-2xl mb-6">Related Anime</h2>
-            <AnimeList character={character} />
+            <AnimeList character={character}/>
           </div>
         )}
       </div>

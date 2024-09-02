@@ -26,7 +26,7 @@ const ButtonDeleteCharacter = ({ id }) => {
 
   return (
     <button
-      className="bg-red-500 w-24 text-white rounded p-2 hover:bg-red-600 disabled:bg-red-300"
+      className="bg-red-500 w-24 h-12 text-white rounded p-2 hover:bg-red-600 disabled:bg-red-300"
       onClick={handleDeleteCharacter}
     >
       Delete

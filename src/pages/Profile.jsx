@@ -18,8 +18,8 @@ const Profile = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchAnimeList())
-  }, [dispatch])
+    if (userStatus === 'succeeded') dispatch(fetchAnimeList())
+  }, [userStatus, dispatch])
 
   if (userStatus === 'loading') return <Loading />
   if (!user) return <div className="text-red-500 text-center mt-4">You are not logged in</div>
